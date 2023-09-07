@@ -1,15 +1,18 @@
 from typing import Optional, List
 
 import bcrypt
-from sqlalchemy import select
+from sqlalchemy import select, and_
 
 from app.user.models import User
 from app.user.repository.user import UserRepository
+from app.user.schemas.user import LoginResponseSchema
 from common.exceptions import (
     PasswordDoesNotMatchException,
     DuplicateEmailOrNicknameException,
+    UserNotFoundException,
 )
 from core.db import session
+from utils import TokenHelper
 
 
 class UserService:
@@ -17,6 +20,21 @@ class UserService:
 
     def __init__(self):
         ...
+
+    async def login(self, email: str, password: str) -> LoginResponseSchema:
+        result = await session.execute(
+            select(User).where(and_(User.email == email, password == password))
+        )
+        user = result.scalars().first()
+        if not user:
+            raise UserNotFoundException
+
+        response = LoginResponseSchema(
+            token=TokenHelper.encode(payload={"user_id": user.id}),
+            refresh_token=TokenHelper.encode(payload={"sub": "refresh"}),
+        )
+
+        return response
 
     async def get_user_list(
         self,
@@ -33,7 +51,7 @@ class UserService:
 
         query = query.limit(limit)
         result = await session.execute(query)
-        return result.scalars().all()
+        return list(result.scalars().all())
 
     async def create_user(
         self,
@@ -65,3 +83,14 @@ class UserService:
         )
 
         return hashed_password.decode(self.encoding)
+
+    async def is_admin(self, user_id: int) -> bool:
+        result = await session.execute(select(User).where(User.id == user_id))
+        user = result.scalars().first()
+        if not user:
+            return False
+
+        if user.is_admin is False:
+            return False
+
+        return True

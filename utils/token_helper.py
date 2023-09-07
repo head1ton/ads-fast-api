@@ -15,9 +15,9 @@ class TokenHelper:
                 "exp": datetime.utcnow() + timedelta(seconds=expire_period),
             },
             key=config.JWT_SECRET_KEY,
-            algorithm=config.ALGORITHM,
-        ).decode("utf8")
-
+            algorithm=config.JWT_ALGORITHM,
+        )
+        # logger.debug("token ====" + token)
         return token
 
     @staticmethod
@@ -26,7 +26,7 @@ class TokenHelper:
             return jwt.decode(
                 token,
                 config.JWT_SECRET_KEY,
-                config.ALGORITHM,
+                config.JWT_ALGORITHM,
             )
         except jwt.exceptions.DecodeError:
             raise DecodeTokenException
@@ -39,7 +39,7 @@ class TokenHelper:
             return jwt.decode(
                 token,
                 config.JWT_SECRET_KEY,
-                config.ALGORITHM,
+                config.JWT_ALGORITHM,
                 options={"verify_exp": False},
             )
         except jwt.exceptions.DecodeError:

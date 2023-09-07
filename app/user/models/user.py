@@ -11,7 +11,7 @@ from utils.datetime import get_current_linux_timestamp
 class User(Base, TimestampMixin):
     __tablename__ = "users"
 
-    user_id: Mapped[int] = mapped_column(
+    id: Mapped[int] = mapped_column(
         primary_key=True, autoincrement=True, name="user_id"
     )
     email: Mapped[str] = mapped_column(String(200), comment="이메일")
@@ -23,7 +23,7 @@ class User(Base, TimestampMixin):
     )
     phone: Mapped[Optional[str]] = mapped_column(String(30), comment="전화번호")
     reg_type: Mapped[Optional[int]] = mapped_column(
-        default=2, comment="등록 타입(0: 가입고객/신규, 1: 가입고객/N15, 2: DB고객/엠텍트, 3: DB고객/제이펀)"
+        default=2, comment="등록 타입(0: 가입고객/신규, 1: 가입고객/N15, 2: DB고객, 3: DB고객)"
     )
     corp: Mapped[Optional[str]] = mapped_column(String(100), comment="회사명")
     team: Mapped[Optional[str]] = mapped_column(String(100), comment="부서명")
@@ -49,5 +49,4 @@ class User(Base, TimestampMixin):
     # comp: Mapped["Comp"] = relationship(back_populates="user")
 
     def __repr__(self) -> str:
-        # return f"User(id={self.id!r}, name={self.name!r}, email={self.email!r}"
-        return f"User(id={self.user_id!r}, nickname={self.nickname!r}, email={self.email!r}"
+        return f"User(user_id={self.id!r}, nickname={self.nickname!r}, email={self.email!r}"

@@ -9,7 +9,8 @@ class Config(BaseSettings):
     APP_HOST: str = "0.0.0.0"
     APP_PORT: int = 8000
     DB_URL: str = f"mysql+aiomysql://testadmin:Devmysql1234!@localhost:3306/testdb"
-    JWT_SECRET_KEY: str = "adsapi"
+    JWT_SECRET_KEY: str = "adsapi0123456789AbCdEfGhIjLmNoPqRsTuVwXyZ"
+    JWT_ALGORITHM: str = "HS256"
     SENTRY_SDN: str = "None"
     CELERY_BROKER_URL: str = "amqp://user:bitnami@localhost:5672/"
     CELERY_BACKEND_URL: str = "redis://:password@localhost6379/0"
