@@ -8,7 +8,7 @@ class Config(BaseSettings):
     DEBUG: bool = True
     APP_HOST: str = "0.0.0.0"
     APP_PORT: int = 8000
-    DB_URL: str = f"mysql+aiomysql://testadmin:Devmysql1234!@localhost:3306/testdb"
+    DB_URL: str = f"mysql+aiomysql://testadmin:Password@localhost:3306/testdb"
     JWT_SECRET_KEY: str = "adsapi0123456789AbCdEfGhIjLmNoPqRsTuVwXyZ"
     JWT_ALGORITHM: str = "HS256"
     SENTRY_SDN: str = "None"
@@ -19,18 +19,18 @@ class Config(BaseSettings):
 
 
 class DevelopmentConfig(Config):
-    DB_URL: str = f"mysql+aiomysql://testadmin:Devmysql1234!@localhost:3306/testdb"
+    DB_URL: str = f"mysql+aiomysql://testadmin:Password@localhost:3306/testdb"
     REDIS_HOST: str = "redis"
     REDIS_PORT: int = 6379
 
 
 class LocalConfig(Config):
-    DB_URL: str = f"mysql+aiomysql://testadmin:Devmysql1234!@localhost:3306/testdb"
+    DB_URL: str = f"mysql+aiomysql://testadmin:Password@localhost:3306/testdb"
 
 
 class ProductionConfig(Config):
     DEBUG: str = "False"
-    DB_URL: str = f"mysql+aiomysql://testadmin:Devmysql1234!@localhost:3306/testdb"
+    DB_URL: str = f"mysql+aiomysql://testadmin:DPassword@localhost:3306/testdb"
 
 
 def get_config():
